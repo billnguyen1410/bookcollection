@@ -18,6 +18,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
+import {useNavigate} from 'react-router-dom';
 
 const theme = createTheme();
 
@@ -25,12 +26,15 @@ const theme = createTheme();
 function MainPage() {
     // useState to require a data from database
     const [bookItems, setBookItems] = useState();
-
+    const navigate = useNavigate();
     useEffect(async () => {
         const response = await axios.get("http://localhost:4700");
         setBookItems(response);
     }, [])
 
+    let addItem = (event) => {
+        return navigate("/addbook");
+    }
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -79,7 +83,7 @@ function MainPage() {
                         </Table>
                     </TableContainer>
                 </Paper>
-                    <Fab size="medium" color="secondary" aria-label="add"><AddIcon /></Fab>
+                    <Fab size="medium" color="secondary" aria-label="add" onClick={() => addItem()}><AddIcon /></Fab>
             </Container>
         </ThemeProvider>
     );

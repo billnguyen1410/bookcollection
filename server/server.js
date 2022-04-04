@@ -32,14 +32,7 @@ app.route("/")
             res.send(err);
         }
     })
-})
-.delete((req, res) => {
-    const deleteItem = req.body._id;
-    console.log(deleteItem);
-    // BookItem.findOneAndRemove({
-
-    // })
-})
+});
 
 
 app.listen(port, () => {
