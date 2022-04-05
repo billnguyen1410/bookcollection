@@ -5,8 +5,10 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require("cors");
 
-app.use (bodyParser.urlencoded({extended:true}));
+app.set("view engine", "ejs");
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors("*"));
+app.use(bodyParser.json());
 
 mongoose.connect("mongodb://localhost:27017/bookDB", {
     useNewUrlParser: true,
@@ -17,22 +19,37 @@ mongoose.connect("mongodb://localhost:27017/bookDB", {
 const bookSchema = new mongoose.Schema({
     title: String,
     category: String,
-    isbn: Number, 
+    isbn: Number,
 })
 // use Schema to create mongoose model. 
 const BookItem = mongoose.model("Bookitem", bookSchema);
 
 
 app.route("/")
-.get((req, res) => {
-    BookItem.find((err, foundBookItem) => {
-        if(!err){
-            res.send(foundBookItem);
-        }else{
-            res.send(err);
-        }
+    // Require method to find data in database.
+    .get((req, res) => {
+        BookItem.find((err, foundBookItem) => {
+            if (!err) {
+                res.send(foundBookItem);
+            } else {
+                res.send(err);
+            }
+        })
     })
-});
+    .delete((req, res) => {
+        const deleteItem = req.body._id;
+        BookItem.findOneAndRemove(
+            {
+                _id: deleteItem
+            }, function (err, deletedBookItem) {
+                if (deletedBookItem) {
+                    res.send(true);
+                } else {
+                    res.send(false);
+                }
+            })
+    })
+
 
 
 app.listen(port, () => {

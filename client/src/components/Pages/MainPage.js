@@ -18,7 +18,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
@@ -26,15 +26,30 @@ const theme = createTheme();
 function MainPage() {
     // useState to require a data from database
     const [bookItems, setBookItems] = useState();
+    const [bookItemDelete, setBookItemDelete] = useState();
+
     const navigate = useNavigate();
     useEffect(async () => {
         const response = await axios.get("http://localhost:4700");
         setBookItems(response);
     }, [])
 
+    // delete button 
+    let deleteItem = (row) => {
+        const deletedItem = axios.delete("http://localhost:4700",
+            {
+                data: { _id: row._id }
+            });
+            setBookItemDelete(deletedItem);
+    }
+
+
+    //add button --> redirect to new route.
     let addItem = (event) => {
         return navigate("/addbook");
     }
+
+
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -49,7 +64,7 @@ function MainPage() {
             >
                 <Toolbar>
                     <Typography variant="h6" color="inherit" noWrap>
-                        Your Book Collection
+                        LN Collection
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -75,7 +90,7 @@ function MainPage() {
                                         <TableCell>{row.category}</TableCell>
                                         <TableCell>{row.isbn}</TableCell>
                                         <TableCell>
-                                            <IconButton aria-label="delete"> <DeleteIcon /> </IconButton>
+                                            <IconButton aria-label="delete" onClick={() => deleteItem(row)}> <DeleteIcon /> </IconButton>
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -83,7 +98,7 @@ function MainPage() {
                         </Table>
                     </TableContainer>
                 </Paper>
-                    <Fab size="medium" color="secondary" aria-label="add" onClick={() => addItem()}><AddIcon /></Fab>
+                <Fab size="medium" color="secondary" aria-label="add" onClick={() => addItem()}><AddIcon /></Fab>
             </Container>
         </ThemeProvider>
     );

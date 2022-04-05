@@ -1,4 +1,4 @@
-
+import SendIcon from '@mui/icons-material/Send';
 import * as React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
@@ -11,12 +11,22 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { useNavigate, Link } from "react-router-dom";
-import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import AddItem from '../Form/FormAddItem'
 
 const theme = createTheme();
 function AddPage() {
 
+    let handleSubmit = async (e) => {
+        e.preventDefault();
+        const data = new FormData(e.target);
+        const res = await axios.post("http://localhost:4700",
+            {
+                title: data.get('title'),
+                category: data.get('category'),
+                isbn: data.get('isbn')
+            })
+    }
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -31,66 +41,34 @@ function AddPage() {
             >
                 <Toolbar>
                     <Typography variant="h6" color="inherit" noWrap>
-                        Your Book Collection
+                        LN Collection
                     </Typography>
                 </Toolbar>
             </AppBar>
+            <Typography component="h1" variant="h4" align="center" fontFamily="Roboto">
+                Add New Item
+            </Typography>
+            <Typography component="h2" variant="h5" align="center" fontFamily="Roboto">
+                To your Book Collection
+            </Typography>
             <Container>
-                <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                id="title"
-                                name="title"
-                                label="Title"
-                                fullWidth
-                                variant="standard"
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                id="category"
-                                name="category"
-                                label="Category"
-                                fullWidth
-                                variant="standard"
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                id="price"
-                                name="price"
-                                label="Price"
-                                fullWidth
-                                variant="standard"
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                id="image"
-                                name="image"
-                                label="Image"
-                                fullWidth
-                                variant="standard"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                id="description"
-                                name="description"
-                                label="Description"
-                                fullWidth
-                                variant="standard"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                        </Grid>
-                    </Grid>
-                </Paper>
+                <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+                    <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+                        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} >
+                            <AddItem />
+                            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                {/* <Stack direction="row" spacing={40}> */}
+                                    <Link to="/">
+                                        <Button variant="outlined" >Back</Button>
+                                    </Link>
+                                    <Button variant="contained" endIcon={<SendIcon />} >
+                                        Submit
+                                    </Button>
+                                {/* </Stack> */}
+                            </Box>
+                        </Box>
+                    </Paper>
+                </Container>
             </Container>
         </ThemeProvider>
     )
