@@ -4,6 +4,7 @@ const port = 4700;
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require("cors");
+const { resolveNaptr } = require('dns');
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -36,22 +37,37 @@ app.route("/")
             }
         })
     })
-    .delete((req, res) => {
-        const deleteItem = req.body._id;
-        BookItem.findOneAndRemove(
-            {
-                _id: deleteItem
-            }, function (err, deletedBookItem) {
-                if (deletedBookItem) {
+    // require method to add new book item into database.
+    .post((req, res) => {
+        const addNew = req.body;
+        BookItem.create({
+            ...addNew
+        },
+            function (err, addedNewBook) {
+                if (addedNewBook) {
                     res.send(true);
                 } else {
                     res.send(false);
                 }
             })
     })
+    // require method to delete book.
+    .delete((req, res) => {
+        const deleteItem = req.body._id;
+        BookItem.findOneAndRemove({
+            _id: deleteItem
+        }, function(err, deletedItem) {
+            if(deletedItem){
+                res.send(true);
+            }else{
+                res.send(false);
+            }
+        })
+    })
 
 
 
-app.listen(port, () => {
-    console.log(`Server is running on ${port}`);
-})
+
+    app.listen(port, () => {
+        console.log(`Server is running on ${port}`);
+    })

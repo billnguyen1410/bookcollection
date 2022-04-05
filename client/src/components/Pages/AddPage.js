@@ -17,16 +17,24 @@ import AddItem from '../Form/FormAddItem'
 const theme = createTheme();
 function AddPage() {
 
-    let handleSubmit = async (e) => {
-        e.preventDefault();
-        const data = new FormData(e.target);
-        const res = await axios.post("http://localhost:4700",
-            {
-                title: data.get('title'),
-                category: data.get('category'),
-                isbn: data.get('isbn')
-            })
+    let navigate = useNavigate();
+
+    let handleSubmit = async (event) => {
+        event.preventDefault();
+        const data = new FormData(event.target);
+        //eslint-disable-next-line no-console
+
+        const res = await axios.post("http://localhost:4700", {
+            title: data.get('title'),
+            category: data.get('category'),
+            isbn: data.get('isbn')
+        });
+
+        if (res.data) {
+            return navigate("/");
+        };
     }
+
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -57,14 +65,14 @@ function AddPage() {
                         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} >
                             <AddItem />
                             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                {/* <Stack direction="row" spacing={40}> */}
+                                <Stack direction="row" spacing={40}>
                                     <Link to="/">
                                         <Button variant="outlined" >Back</Button>
                                     </Link>
-                                    <Button variant="contained" endIcon={<SendIcon />} >
+                                    <Button variant="contained" endIcon={<SendIcon />} type="submit" >
                                         Submit
                                     </Button>
-                                {/* </Stack> */}
+                                </Stack>
                             </Box>
                         </Box>
                     </Paper>
