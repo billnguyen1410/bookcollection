@@ -4,7 +4,6 @@ const port = 4700;
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require("cors");
-const { resolveNaptr } = require('dns');
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
