@@ -45,18 +45,11 @@ function MainPage() {
         setBookItemDelete(deletedItem);
     }
 
-
     //add button --> redirect to new route.
     let addItem = (event) => {
         return navigate("/addbook");
     }
-
-    //update button --> redirect to new route
-    let updateItem = (event) => {
-        return navigate("/updatebook");
-    }
-
-
+    
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -107,7 +100,6 @@ function MainPage() {
                 </Paper>
                 <Stack alignItems="center" direction="row" spacing={10} justifyContent="center">
                     <Fab size="medium" color="secondary" aria-label="add" onClick={() => addItem()}><AddIcon /></Fab>
-                    <Fab size="medium" color="secondary" aria-label="edit" onClick={() => updateItem()}><EditIcon /></Fab>
                 </Stack>
             </Container>
         </ThemeProvider>

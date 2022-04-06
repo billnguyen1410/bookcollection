@@ -12,7 +12,6 @@ function App() {
         <Routes>
           <Route exact path="/" element={<MainPage />} />
           <Route path="/addbook" element={<AddPage />} />
-          <Route path="/updatebook" element={<UpdatePage />} />
         </Routes>
       </BrowserRouter>
     </div>
