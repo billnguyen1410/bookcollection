@@ -19,6 +19,8 @@ import IconButton from '@mui/material/IconButton';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
+import EditIcon from '@mui/icons-material/Edit';
+import Stack from '@mui/material/Stack';
 
 const theme = createTheme();
 
@@ -40,13 +42,18 @@ function MainPage() {
             {
                 data: { _id: row._id }
             });
-            setBookItemDelete(deletedItem);
+        setBookItemDelete(deletedItem);
     }
 
 
     //add button --> redirect to new route.
     let addItem = (event) => {
         return navigate("/addbook");
+    }
+
+    //update button --> redirect to new route
+    let updateItem = (event) => {
+        return navigate("/updatebook");
     }
 
 
@@ -98,7 +105,10 @@ function MainPage() {
                         </Table>
                     </TableContainer>
                 </Paper>
-                <Fab size="medium" color="secondary" aria-label="add" onClick={() => addItem()}><AddIcon /></Fab>
+                <Stack alignItems="center" direction="row" spacing={10} justifyContent="center">
+                    <Fab size="medium" color="secondary" aria-label="add" onClick={() => addItem()}><AddIcon /></Fab>
+                    <Fab size="medium" color="secondary" aria-label="edit" onClick={() => updateItem()}><EditIcon /></Fab>
+                </Stack>
             </Container>
         </ThemeProvider>
     );
