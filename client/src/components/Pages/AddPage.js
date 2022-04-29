@@ -13,6 +13,7 @@ import axios from 'axios';
 import { useNavigate, Link } from "react-router-dom";
 import Stack from '@mui/material/Stack';
 import AddItem from '../Form/FormAddItem'
+import { env } from '../../env';
 
 const theme = createTheme();
 function AddPage() {
@@ -24,7 +25,7 @@ function AddPage() {
         const data = new FormData(event.target);
         //eslint-disable-next-line no-console
 
-        const res = await axios.post("http://localhost:4700", {
+        const res = await axios.post(env.API_HOST, {
             title: data.get('title'),
             category: data.get('category'),
             isbn: data.get('isbn')

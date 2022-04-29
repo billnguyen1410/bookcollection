@@ -8,6 +8,7 @@ const cors = require("cors");
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors("*"));
+// receive data from client-side
 app.use(bodyParser.json());
 
 mongoose.connect("mongodb://localhost:27017/bookDB", {
@@ -19,7 +20,7 @@ mongoose.connect("mongodb://localhost:27017/bookDB", {
 const bookSchema = new mongoose.Schema({
     title: String,
     category: String,
-    isbn: Number,
+    isbn: Number, // should validate because number.
 })
 // use Schema to create mongoose model. 
 const BookItem = mongoose.model("Bookitem", bookSchema);
@@ -38,9 +39,9 @@ app.route("/")
     })
     // require method to add new book item into database.
     .post((req, res) => {
-        const addNew = req.body;
+        const addBook = req.body;
         BookItem.create({
-            ...addNew
+            ...addBook
         },
             function (err, addedNewBook) {
                 if (addedNewBook) {
@@ -55,18 +56,16 @@ app.route("/")
         const deleteItem = req.body._id;
         BookItem.findOneAndRemove({
             _id: deleteItem
-        }, function(err, deletedItem) {
-            if(deletedItem){
+        }, function (err, deletedItem) {
+            if (deletedItem) {
                 res.send(true);
-            }else{
+            } else {
                 res.send(false);
             }
         })
     })
 
 
-
-
-    app.listen(port, () => {
-        console.log(`Server is running on ${port}`);
-    })
+app.listen(port, () => {
+    console.log(`Server is running on ${port}`);
+})
