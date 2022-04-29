@@ -27,17 +27,18 @@ const theme = createTheme();
 function MainPage() {
     // useState to require a data from database
     const [bookItems, setBookItems] = useState();
+
     const [bookItemDelete, setBookItemDelete] = useState();
 
     const navigate = useNavigate();
     useEffect(async () => {
-        const response = await axios.get("http://localhost:4700");
+        const response = await axios.get(env.API_HOST);
         setBookItems(response);
     }, [])
 
     // delete button 
     let deleteItem = (row) => {
-        const deletedItem = axios.delete("http://localhost:4700",
+        const deletedItem = axios.delete(env.API_HOST,
             {
                 data: { _id: row._id }
             });
